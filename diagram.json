@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "author": "Hoàng Đăng",
+  "editor": "wokwi",
+  "notes": "Sơ đồ hệ thống Kho thông minh IoT - Phục vụ giảng dạy",
+  "parts": [
+    {
+      "type": "board-esp32-devkit-c-v4",
+      "id": "esp",
+      "top": 0,
+      "left": 0,
+      "attrs": {},
+      "note": "Bộ vi điều khiển trung tâm ESP32 - Xử lý logic và kết nối WiFi"
+    },
+    {
+      "type": "board-ssd1306",
+      "id": "oled1",
+      "top": 22.34,
+      "left": 144.23,
+      "attrs": { "i2cAddress": "0x3c" },
+      "note": "Màn hình OLED I2C - Hiển thị thông số cảm biến và trạng thái hệ thống"
+    },
+    {
+      "type": "wokwi-dht22",
+      "id": "dht1",
+      "top": -220.5,
+      "left": 23.4,
+      "attrs": {},
+      "note": "Cảm biến DHT22 - Đo nhiệt độ và độ ẩm môi trường kho"
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r1",
+      "top": -72.85,
+      "left": -86.4,
+      "attrs": { "value": "10000" },
+      "note": "Điện trở kéo lên (Pull-up) 10k cho đường dữ liệu DHT22"
+    },
+    {
+      "type": "wokwi-servo",
+      "id": "servo1",
+      "top": 142,
+      "left": -307.2,
+      "attrs": {},
+      "note": "Động cơ Servo - Giả lập cơ cấu mở cửa thoát hiểm hoặc quạt thông gió"
+    },
+    {
+      "type": "wokwi-hc-sr04",
+      "id": "ultrasonic1",
+      "top": -209.7,
+      "left": 139.9,
+      "attrs": {},
+      "note": "Cảm biến siêu âm HC-SR04 - Phát hiện vật cản/đột nhập"
+    },
+    {
+      "type": "wokwi-photoresistor-sensor",
+      "id": "ldr1",
+      "top": 51.2,
+      "left": -229.6,
+      "attrs": {},
+      "note": "Cảm biến quang trở (LDR) - Theo dõi cường độ ánh sáng trong kho"
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn1",
+      "top": 159.8,
+      "left": 192,
+      "attrs": { "color": "green", "xray": "1" },
+      "note": "Nút nhấn - Dùng để chuyển đổi giữa chế độ Tự động và Thủ công"
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_green",
+      "top": 54,
+      "left": 407,
+      "attrs": { "color": "green" },
+      "note": "LED xanh - Chỉ báo hệ thống đang ở trạng thái AN TOÀN"
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_red",
+      "top": 140.4,
+      "left": 407,
+      "attrs": { "color": "red" },
+      "note": "LED đỏ - Chỉ báo trạng thái NGUY HIỂM/CẢNH BÁO"
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_green",
+      "top": 99.95,
+      "left": 307.2,
+      "attrs": { "value": "220" },
+      "note": "Điện trở hạn dòng 220 Ohm cho LED xanh"
+    },
+    {
+      "type": "wokwi-resistor",
+      "id": "r_red",
+      "top": 147.95,
+      "left": 326.4,
+      "attrs": { "value": "220" },
+      "note": "Điện trở hạn dòng 220 Ohm cho LED đỏ"
+    }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "oled1:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "oled1:VCC", "esp:3V3", "red", [ "v-57.6", "h-182.25" ] ],
+    [ "oled1:SCL", "esp:22", "blue", [ "v-19.2", "h-66.9", "v38.4", "h-9.6" ] ],
+    [ "oled1:SDA", "esp:21", "violet", [ "v-28.8", "h-86.33", "v38.4" ] ],
+    [ "dht1:VCC", "esp:3V3", "red", [ "v0", "h-48", "v76.8" ] ],
+    [ "dht1:SDA", "esp:15", "green", [ "v28.8", "h67.3", "v249.6" ] ],
+    [ "dht1:SDA", "r1:2", "orange", [ "v0" ] ],
+    [ "r1:1", "esp:3V3", "orange", [ "v0" ] ],
+    [ "dht1:GND", "esp:GND.2", "black", [ "v38.4", "h38.4" ] ],
+    [ "servo1:PWM", "esp:13", "blue", [ "h0", "v38.6", "h192", "v-38.4" ] ],
+    [ "servo1:GND", "esp:GND.1", "black", [ "h-19.2", "v96", "h201.6", "v-105.6" ] ],
+    [ "servo1:V+", "esp:5V", "red", [ "h-9.6", "v67.3", "h211.2" ] ],
+    [ "ultrasonic1:VCC", "esp:3V3", "red", [ "v76.8", "h-249.6", "v67.2" ] ],
+    [ "ultrasonic1:GND", "esp:GND.2", "black", [ "v105.6", "h-135.6" ] ],
+    [ "ultrasonic1:TRIG", "esp:5", "violet", [ "v19.2", "h38", "v211.2" ] ],
+    [ "ultrasonic1:ECHO", "esp:18", "blue", [ "v9.6", "h37.6", "v230.4", "h-144", "v-19.2" ] ],
+    [ "ldr1:VCC", "esp:3V3", "red", [ "h28.8", "v-38.4" ] ],
+    [ "ldr1:GND", "esp:GND.1", "black", [ "h19.2", "v76.4" ] ],
+    [ "ldr1:AO", "esp:34", "green", [ "h38.4", "v-29.5" ] ],
+    [ "btn1:1.l", "esp:4", "red", [ "h-9.6", "v-28.8" ] ],
+    [ "btn1:2.l", "esp:GND.3", "black", [ "h-57.6", "v-105.4", "h-9.6" ] ],
+    [ "esp:2", "r_green:1", "green", [] ],
+    [ "r_green:2", "led_green:A", "green", [] ],
+    [ "led_green:K", "esp:GND.1", "black", [ "v30", "h-20", "v-150" ] ],
+    [ "esp:14", "r_red:1", "red", [] ],
+    [ "led_red:K", "esp:GND.1", "black", [ "v40", "h-30", "v-170" ] ],
+    [ "r_red:2", "led_red:A", "red", [ "v67.2", "h8.4" ] ],
+    [ "led_green:C", "esp:GND.3", "black", [ "v19.2", "h-297.2", "v-28.8" ] ],
+    [ "led_red:C", "esp:GND.3", "black", [ "v48", "h-287.6", "v-134.4" ] ]
+  ],
+  "dependencies": {}
+}
